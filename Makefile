@@ -11,7 +11,7 @@ compile: deps
 	./rebar compile
 
 clean:
-	./rebar clean
+	./rebar clean skip_deps=true
 	@-rm erl_crash.dump -f
 
 # 清除依赖项目
