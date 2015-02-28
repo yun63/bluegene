@@ -1,42 +1,39 @@
 #! /bin/bash
 ROOT=`cd $(dirname $0); pwd`
-CONFDIR=$ROOT/etc
-LOGDIR=$ROOT/log
+CONF_DIR=$ROOT/etc
+LOG_DIR=$ROOT/log
+SYSTEM_CONFIG=$CONF_DIR/sys.config
 
 # 定义erlang vm选项
 ERL=erl
-POLL=true
+NAME_FLAG=-name
+POLL_FLAG=true
+SMP_FLAG=enable
+CONNECT_ALL_FLAG=true
 ASYNC=8
-SMP=enable
 ERL_PROCESSES=500000
-CONNECT_ALL=true
 DATETIME=`date "+%Y%m%d-%H%M%S"`
+
 export ERL_CRASH_DUMP=$ROOT/erl_crash_$DATETIME.dump
 export ERL_MAX_PORTS=102400
 export ERL_MAX_ETS_TABLES=10000
-export HOME=$ROOT
-SYSTEM_CONFIG=$CONFDIR/system.config
 
 # 其它变量
-ERLANG_NODE=xs_game@192.168.1.120
+ERLANG_NODE=bluegene@10.10.10.116
 COOKIE="node-cookie"
-WORLD_NODE=
-# 地图节点启动的地图
-AREA_MAP="[]"
 
 # 运行的程序及控制文件
-APP_MOD=game
-APP_CTL=game_ctl
-ERROR_LOG=$LOGDIR/game.log
-SASL_LOG=$LOGDIR/game_`date +%Y%m%d`.sasl
+APP_MOD=game_ctrl
+APP_CTL=game_ctrl
+GAME_LOG=$LOG_DIR/game.log
+SASL_LOG=$LOG_DIR/game_`date +%Y%m%d`.sasl
 
 # define additional environment variables
-EBINS="$ROOT/ebin $ROOT/deps/ebin"
-#echo "ebins is " $EBINS
+EBINS="$ROOT/ebin $ROOT/deps/*/ebin $ROOT/apps/*/ebin"
 
-# makesure the logs dir exists
-if [ ! -d $LOGDIR ]; then
-    mkdir -p $LOGDIR || echo "make $LOGDIR error!"; exit 1
+# make sure the logs dir exists
+if [ ! -d $LOG_DIR ]; then
+    mkdir -p $LOG_DIR || echo "make $LOG_DIR error!"; exit 1
 fi
 
 STATUS_SUCCESS=0    # 成功
@@ -90,15 +87,7 @@ usage ()
     echo "  -c, --cookie=Cookie     节点cookie(默认\"\")"
     echo "  -f, --conf=Conf         指明使用的配置文件(默认gh.conf)"
     echo "  -r, --reload=Type       指明要reload的系统数据:code,config,all_data,指定的数据如goods(默认all_data)"
-    echo "  -w, --world=World       指明world节点,为gate,area节点时需要指明此参数"
     echo ""
-}
-
-# 修改ulimit
-change_ulimit() {
-    if ! ulimit -HSn 102400 2> /dev/null ; then
-        error "请确保具有root权限"
-    fi
 }
 
 # 查询运行中节点的信息
@@ -110,7 +99,7 @@ rpc()
       -pa $EBINS \
       -config $SYSTEM_CONFIG \
       -setcookie ${COOKIE} \
-      -s ${APP_CTL} -extra $ERLANG_NODE $@
+      -s game_ctrl -extra $ERLANG_NODE $@
 }
 
 # 打印rpc返回信息
@@ -137,11 +126,7 @@ print_rpc_return ()
 # 判断节点是否运行
 is_started () 
 {
-    if [ "$APP_MOD" = "game" ]; then
-        rpc status
-    else
-        rpc status $APP_MOD
-    fi
+    rpc status game_ctrl
     result=$?
     if [  "$result" = "$STATUS_SUCCESS" ]; then
         return 0
@@ -150,23 +135,21 @@ is_started ()
 }
 
 # start interactive server
-live ()
+debug()
 {
-    change_ulimit
     $ERL \
       $NAME_FLAG $ERLANG_NODE \
       -pa $EBINS \
       -config $SYSTEM_CONFIG \
       -setcookie ${COOKIE} \
       -kernel dist_auto_connect never \
-      -s ${APP_MOD} start \
+      -s game_ctrl start \
       $ERLANG_OPTS -extra $ARGS "$@"
 }
 
 # 启动server
 start ()
 {
-    change_ulimit
     if is_started; then
         warn "节点$ERLANG_NODE已经启动"
         exit 0
@@ -178,9 +161,9 @@ start ()
       -pa $EBINS \
       -setcookie ${COOKIE} \
       -kernel dist_auto_connect never \
-      -kernel error_logger \{file,\"$ERROR_LOG\"\} \
+      -kernel error_logger \{file,\"$GAME_LOG\"\} \
       -sasl sasl_error_logger \{file,\"$SASL_LOG\"\} \
-      -s ${APP_MOD} start\
+      -s game_ctrl start\
       $ERLANG_OPTS $ARGS "$@"
     
     RETRY=0
@@ -195,7 +178,7 @@ start ()
                 sleep 1
             fi
             if [ $RETRY -ge 30 ]; then
-                warn "*****************服务器$APP_NAME启动失败,请手动检查**************"
+                warn "*****************服务器game_ctrl启动失败,请手动检查**************"
                 exit 1
             fi
         fi
@@ -219,8 +202,9 @@ attach ()
     if ! is_started; then
         error "节点$ERLANG_NODE未启动"
     fi
+    TTY=`tty | sed -e  's/.*\///g'`
     $ERL \
-      $NAME_FLAG ${NAME}debug@$HOST \
+      $NAME_FLAG debug-${TTY}-${ERLANG_NODE} \
       -setcookie ${COOKIE} \
       -hidden \
       -remsh $ERLANG_NODE \
@@ -269,63 +253,16 @@ reload ()
     fi  
 }
 
-# 追踪
-peer ()
-{
-    if rpc peer ${PEER_ID}; then
-        echo2 "节点$ERLANG_NODE追踪${PEER_ID}成功"
-    else
-        error "节点$ERLANG_NODE追踪${PEER_ID}失败"
-    fi  
-}
-
-# 解除追踪
-unpeer ()
-{
-    if rpc unpeer ${PEER_ID}; then
-        echo2 "节点$ERLANG_NODE解除追踪${PEER_ID}成功"
-    else
-        error "节点$ERLANG_NODE解除追踪${PEER_ID}失败"
-    fi  
-}
-
-# parse command line parameters
-while [ $# -ne 0 ] ; do
-    PARAM=$1
-    shift
-    case $PARAM in
-        --) break ;;
-        --node|-n) ERLANG_NODE=$1; shift ;;
-        --cookie|-c) COOKIE=$1 ; shift ;;
-        --conf|-f) export GAME_CONF_FILE=$1 ; shift ;;
-        --help|-h) usage; exit 0;;
-        --reload|-r) RELOAD_TYPE=$1; shift;;
-        --peer|-p) PEER_ID=$1; shift;;
-        --world|-w) WORLD_NODE=$1; shift;;
-        *) ARGS="$ARGS $PARAM" ;;
-    esac
-done
-
-NAME=${ERLANG_NODE%%@*}
+DEBUG_NAME=${ERLANG_NODE%%@*}
 HOST=${ERLANG_NODE##*@}
 NAME_FLAG=-name
-[ "$ERLANG_NODE" = "${ERLANG_NODE%.*}" ] && NAME_FLAG=-sname
 
-# 检测world参数
-if [ "$APP_MOD" = "area_app" -o "$APP_MOD" = "gate_app" ]; then
-    [ -z "$WORLD_NODE" ] && error "请设置-w(--world)参数"
-fi
-
-#ERLANG_OPTS="-connect_all $CONNECT_ALL +K $POLL -smp $SMP +P $ERL_PROCESSES \
-#    +t 10485760 +fnu +hms 8192 +hmbs 8192 +zdbbl 81920"
-
-ERLANG_OPTS="-connect_all $CONNECT_ALL +K $POLL -smp $SMP +P $ERL_PROCESSES \
+ERLANG_OPTS="-connect_all $CONNECT_ALL_FLAG +K $POLL_FLAG -smp $SMP_FLAG +P $ERL_PROCESSES \
     +t 67108864 +fnu +zdbbl 81920"
 
-
-case $ARGS in
+case $1 in
     '') usage;;
-    ' live') live;;
+    ' debug') debug;;
     ' start') start;;
     ' status') status;;
     ' attach') attach;;
@@ -333,7 +270,5 @@ case $ARGS in
     ' stopsock') stopsock;;
     ' restart') restart;;
     ' reload') reload;;
-    ' peer') peer;;
-    ' unpeer') unpeer;;
     *) usage; exit 1;;
 esac

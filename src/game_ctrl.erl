@@ -13,8 +13,8 @@
 %%
 %% Exported Functions
 %%
--export([server_start/0, 
-		 server_stop/0,
+-export([start/0, 
+		 stop/0,
 		 start_applications/1,
 		 info/0
 	]).
@@ -27,7 +27,7 @@
 %%
 
 %%游戏服务器
-server_start()->
+start()->
     try
         ok = start_applications(?SERVER_APPS)
     after
@@ -35,7 +35,7 @@ server_start()->
     end.
 
 %%停止游戏服务器
-server_stop() ->
+stop() ->
     ok = stop_applications(?SERVER_APPS),
     erlang:halt().
 

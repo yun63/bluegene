@@ -13,5 +13,5 @@ exec $ERL -name $NAME_NODE \
     -setcookie $COOKIE \
     -pa $EBINS -boot start_sasl \
     -eval "application:load(mochiweb)" \
-    -eval "game_ctrl:server_start()"
+    -s game_ctrl start
     
