@@ -7,11 +7,13 @@ deps:
 	./rebar get-deps
 
 # 编译相关项目,在编译之前先查看依赖项目是否已经存在                                                                     
-compile: deps
+compile: deps 
 	./rebar compile
+	erlc -o ebin src/game_ctrl.erl
 
 clean:
-	./rebar clean #skip_deps=true
+	./rebar clean skip_deps=true
+	@-rm ebin/* -rf
 	@-rm erl_crash.dump -f
 
 # 清除依赖项目
