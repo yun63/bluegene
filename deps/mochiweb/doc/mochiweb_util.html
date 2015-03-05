@@ -1,0 +1,256 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Module mochiweb_util</title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css" title="EDoc">
+</head>
+<body bgcolor="white">
+<div class="navbar"><a name="#navbar_top"></a><table width="100%" border="0" cellspacing="0" cellpadding="2" summary="navigation bar"><tr><td><a href="overview-summary.html" target="overviewFrame">Overview</a></td><td><a href="http://www.erlang.org/"><img src="erlang.png" align="right" border="0" alt="erlang logo"></a></td></tr></table></div>
+<hr>
+
+<h1>Module mochiweb_util</h1>
+<ul class="index"><li><a href="#description">Description</a></li><li><a href="#types">Data Types</a></li><li><a href="#index">Function Index</a></li><li><a href="#functions">Function Details</a></li></ul>Utilities for parsing and quoting.
+<p>Copyright © 2007 Mochi Media, Inc.</p>
+
+<p><b>Authors:</b> Bob Ippolito (<a href="mailto:bob@mochimedia.com"><tt>bob@mochimedia.com</tt></a>).</p>
+
+<h2><a name="description">Description</a></h2>Utilities for parsing and quoting.
+<h2><a name="types">Data Types</a></h2>
+
+<h3 class="typedecl"><a name="type-encoding">encoding()</a></h3>
+<p><tt>encoding() = string()</tt></p>
+
+
+<h3 class="typedecl"><a name="type-media_type">media_type()</a></h3>
+<p><tt>media_type() = string()</tt></p>
+
+
+<h3 class="typedecl"><a name="type-qvalue">qvalue()</a></h3>
+<p><tt>qvalue() = {<a href="#type-media_type">media_type()</a> | <a href="#type-encoding">encoding()</a>, float()}</tt></p>
+
+
+<h2><a name="index">Function Index</a></h2>
+<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#cmd-1">cmd/1</a></td><td>os:cmd(cmd_string(Argv)).</td></tr>
+<tr><td valign="top"><a href="#cmd_port-2">cmd_port/2</a></td><td>open_port({spawn, mochiweb_util:cmd_string(Argv)}, Options).</td></tr>
+<tr><td valign="top"><a href="#cmd_status-1">cmd_status/1</a></td><td>Accumulate the output and exit status from the given application,
+       will be spawned with cmd_port/2.</td></tr>
+<tr><td valign="top"><a href="#cmd_status-2">cmd_status/2</a></td><td>Accumulate the output and exit status from the given application,
+       will be spawned with cmd_port/2.</td></tr>
+<tr><td valign="top"><a href="#cmd_string-1">cmd_string/1</a></td><td>Create a shell quoted command string from a list of arguments.</td></tr>
+<tr><td valign="top"><a href="#guess_mime-1">guess_mime/1</a></td><td> Guess the mime type of a file by the extension of its filename.</td></tr>
+<tr><td valign="top"><a href="#join-2">join/2</a></td><td>Join a list of strings or binaries together with the given separator
+       string or char or binary.</td></tr>
+<tr><td valign="top"><a href="#make_io-1">make_io/1</a></td><td></td></tr>
+<tr><td valign="top"><a href="#parse_header-1">parse_header/1</a></td><td> Parse a Content-Type like header, return the main Content-Type
+        and a property list of options.</td></tr>
+<tr><td valign="top"><a href="#parse_qs-1">parse_qs/1</a></td><td>Parse a query string or application/x-www-form-urlencoded.</td></tr>
+<tr><td valign="top"><a href="#parse_qvalues-1">parse_qvalues/1</a></td><td>Parses a list (given as a string) of elements with Q values associated       
+to them.</td></tr>
+<tr><td valign="top"><a href="#partition-2">partition/2</a></td><td>Inspired by Python 2.5's str.partition:
+       partition("foo/bar", "/") = {"foo", "/", "bar"},
+       partition("foo", "/") = {"foo", "", ""}.</td></tr>
+<tr><td valign="top"><a href="#path_split-1">path_split/1</a></td><td>Split a path starting from the left, as in URL traversal.</td></tr>
+<tr><td valign="top"><a href="#pick_accepted_encodings-3">pick_accepted_encodings/3</a></td><td>Determines which encodings specified in the given Q values list are       
+valid according to a list of supported encodings and a default encoding.</td></tr>
+<tr><td valign="top"><a href="#quote_plus-1">quote_plus/1</a></td><td>URL safe encoding of the given term.</td></tr>
+<tr><td valign="top"><a href="#record_to_proplist-2">record_to_proplist/2</a></td><td>calls record_to_proplist/3 with a default TypeKey of '__record'.</td></tr>
+<tr><td valign="top"><a href="#record_to_proplist-3">record_to_proplist/3</a></td><td>Return a proplist of the given Record with each field in the
+       Fields list set as a key with the corresponding value in the Record.</td></tr>
+<tr><td valign="top"><a href="#safe_relative_path-1">safe_relative_path/1</a></td><td>Return the reduced version of a relative path or undefined if it
+       is not safe.</td></tr>
+<tr><td valign="top"><a href="#shell_quote-1">shell_quote/1</a></td><td>Quote a string according to UNIX shell quoting rules, returns a string
+       surrounded by double quotes.</td></tr>
+<tr><td valign="top"><a href="#unquote-1">unquote/1</a></td><td>Unquote a URL encoded string.</td></tr>
+<tr><td valign="top"><a href="#urlencode-1">urlencode/1</a></td><td>URL encode the property list.</td></tr>
+<tr><td valign="top"><a href="#urlsplit-1">urlsplit/1</a></td><td>Return a 5-tuple, does not expand % escapes.</td></tr>
+<tr><td valign="top"><a href="#urlsplit_path-1">urlsplit_path/1</a></td><td>Return a 3-tuple, does not expand % escapes.</td></tr>
+<tr><td valign="top"><a href="#urlunsplit-1">urlunsplit/1</a></td><td>Assemble a URL from the 5-tuple.</td></tr>
+<tr><td valign="top"><a href="#urlunsplit_path-1">urlunsplit_path/1</a></td><td>Assemble a URL path from the 3-tuple.</td></tr>
+</table>
+
+<h2><a name="functions">Function Details</a></h2>
+
+<h3 class="function"><a name="cmd-1">cmd/1</a></h3>
+<div class="spec">
+<p><tt>cmd(Argv::[string()]) -&gt; string()</tt><br></p>
+</div><p>os:cmd(cmd_string(Argv)).</p>
+
+<h3 class="function"><a name="cmd_port-2">cmd_port/2</a></h3>
+<div class="spec">
+<p><tt>cmd_port(Argv::[string()], Options) -&gt; port()</tt><br></p>
+</div><p>open_port({spawn, mochiweb_util:cmd_string(Argv)}, Options).</p>
+
+<h3 class="function"><a name="cmd_status-1">cmd_status/1</a></h3>
+<div class="spec">
+<p><tt>cmd_status(Argv::[string()]) -&gt; {ExitStatus::integer(), Stdout::binary()}</tt><br></p>
+</div><p>Accumulate the output and exit status from the given application,
+       will be spawned with cmd_port/2.</p>
+
+<h3 class="function"><a name="cmd_status-2">cmd_status/2</a></h3>
+<div class="spec">
+<p><tt>cmd_status(Argv::[string()], Options::[atom()]) -&gt; {ExitStatus::integer(), Stdout::binary()}</tt><br></p>
+</div><p>Accumulate the output and exit status from the given application,
+       will be spawned with cmd_port/2.</p>
+
+<h3 class="function"><a name="cmd_string-1">cmd_string/1</a></h3>
+<div class="spec">
+<p><tt>cmd_string(Argv::[string()]) -&gt; string()</tt><br></p>
+</div><p>Create a shell quoted command string from a list of arguments.</p>
+
+<h3 class="function"><a name="guess_mime-1">guess_mime/1</a></h3>
+<div class="spec">
+<p><tt>guess_mime(File::string()) -&gt; string()</tt><br></p>
+</div><p> Guess the mime type of a file by the extension of its filename.</p>
+
+<h3 class="function"><a name="join-2">join/2</a></h3>
+<div class="spec">
+<p><tt>join(Strings::[iolist()], Separator::iolist()) -&gt; iolist()</tt><br></p>
+</div><p>Join a list of strings or binaries together with the given separator
+       string or char or binary. The output is flattened, but may be an
+       iolist() instead of a string() if any of the inputs are binary().</p>
+
+<h3 class="function"><a name="make_io-1">make_io/1</a></h3>
+<div class="spec">
+<p><tt>make_io(Atom) -&gt; any()</tt></p>
+</div>
+
+<h3 class="function"><a name="parse_header-1">parse_header/1</a></h3>
+<div class="spec">
+<p><tt>parse_header(String::string()) -&gt; {Type, [{K, V}]}</tt><br></p>
+</div><p> Parse a Content-Type like header, return the main Content-Type
+        and a property list of options.</p>
+
+<h3 class="function"><a name="parse_qs-1">parse_qs/1</a></h3>
+<div class="spec">
+<p><tt>parse_qs(Binary::string() | binary()) -&gt; [{Key, Value}]</tt><br></p>
+</div><p>Parse a query string or application/x-www-form-urlencoded.</p>
+
+<h3 class="function"><a name="parse_qvalues-1">parse_qvalues/1</a></h3>
+<div class="spec">
+<p><tt>parse_qvalues(QValuesStr::string()) -&gt; [<a href="#type-qvalue">qvalue()</a>] | invalid_qvalue_string</tt><br></p>
+</div><p><p>Parses a list (given as a string) of elements with Q values associated       
+to them. Elements are separated by commas and each element is separated       
+from its Q value by a semicolon. Q values are optional but when missing       
+the value of an element is considered as 1.0. A Q value is always in the       
+range [0.0, 1.0]. A Q value list is used for example as the value of the       
+HTTP "Accept" and "Accept-Encoding" headers.</p>
+ 
+       <p>Q values are described in section 2.9 of the RFC 2616 (HTTP 1.1).</p>
+ 
+       <p>Example:</p>
+ 
+       parse_qvalues("gzip; q=0.5, deflate, identity;q=0.0") -&gt;
+           [{"gzip", 0.5}, {"deflate", 1.0}, {"identity", 0.0}]
+ </p>
+
+<h3 class="function"><a name="partition-2">partition/2</a></h3>
+<div class="spec">
+<p><tt>partition(String, Sep) -&gt; {String, [], []} | {Prefix, Sep, Postfix}</tt><br></p>
+</div><p>Inspired by Python 2.5's str.partition:
+       partition("foo/bar", "/") = {"foo", "/", "bar"},
+       partition("foo", "/") = {"foo", "", ""}.</p>
+
+<h3 class="function"><a name="path_split-1">path_split/1</a></h3>
+<div class="spec">
+<p><tt>path_split(S::string()) -&gt; {Part, Rest}</tt><br></p>
+</div><p>Split a path starting from the left, as in URL traversal.
+       path_split("foo/bar") = {"foo", "bar"},
+       path_split("/foo/bar") = {"", "foo/bar"}.</p>
+
+<h3 class="function"><a name="pick_accepted_encodings-3">pick_accepted_encodings/3</a></h3>
+<div class="spec">
+<p><tt>pick_accepted_encodings(AcceptedEncs::[<a href="#type-qvalue">qvalue()</a>], SupportedEncs::[<a href="#type-encoding">encoding()</a>], DefaultEnc::<a href="#type-encoding">encoding()</a>) -&gt; [<a href="#type-encoding">encoding()</a>]</tt><br></p>
+</div><p><p>Determines which encodings specified in the given Q values list are       
+valid according to a list of supported encodings and a default encoding.</p>
+ 
+       <p>The returned list of encodings is sorted, descendingly, according to the       
+Q values of the given list. The last element of this list is the given       
+default encoding unless this encoding is explicitily or implicitily       
+marked with a Q value of 0.0 in the given Q values list.       
+Note: encodings with the same Q value are kept in the same order as             
+found in the input Q values list.</p>
+ 
+       <p>This encoding picking process is described in section 14.3 of the       
+RFC 2616 (HTTP 1.1).</p>
+ 
+       <p>Example:</p>
+ 
+       pick_accepted_encodings(
+           [{"gzip", 0.5}, {"deflate", 1.0}],
+           ["gzip", "identity"],
+           "identity"
+       ) -&gt;
+           ["gzip", "identity"]
+ </p>
+
+<h3 class="function"><a name="quote_plus-1">quote_plus/1</a></h3>
+<div class="spec">
+<p><tt>quote_plus(Atom::atom() | integer() | float() | string() | binary()) -&gt; string()</tt><br></p>
+</div><p>URL safe encoding of the given term.</p>
+
+<h3 class="function"><a name="record_to_proplist-2">record_to_proplist/2</a></h3>
+<div class="spec">
+<p><tt>record_to_proplist(Record, Fields) -&gt; <a href="#type-proplist">proplist()</a></tt><br></p>
+</div><p>calls record_to_proplist/3 with a default TypeKey of '__record'</p>
+
+<h3 class="function"><a name="record_to_proplist-3">record_to_proplist/3</a></h3>
+<div class="spec">
+<p><tt>record_to_proplist(Record, Fields, TypeKey) -&gt; <a href="#type-proplist">proplist()</a></tt><br></p>
+</div><p>Return a proplist of the given Record with each field in the
+       Fields list set as a key with the corresponding value in the Record.
+       TypeKey is the key that is used to store the record type
+       Fields should be obtained by calling record_info(fields, record_type)
+       where record_type is the record type of Record</p>
+
+<h3 class="function"><a name="safe_relative_path-1">safe_relative_path/1</a></h3>
+<div class="spec">
+<p><tt>safe_relative_path(P::string()) -&gt; string() | undefined</tt><br></p>
+</div><p>Return the reduced version of a relative path or undefined if it
+       is not safe. safe relative paths can be joined with an absolute path
+       and will result in a subdirectory of the absolute path. Safe paths
+       never contain a backslash character.</p>
+
+<h3 class="function"><a name="shell_quote-1">shell_quote/1</a></h3>
+<div class="spec">
+<p><tt>shell_quote(L::string()) -&gt; string()</tt><br></p>
+</div><p>Quote a string according to UNIX shell quoting rules, returns a string
+       surrounded by double quotes.</p>
+
+<h3 class="function"><a name="unquote-1">unquote/1</a></h3>
+<div class="spec">
+<p><tt>unquote(Binary::string() | binary()) -&gt; string()</tt><br></p>
+</div><p>Unquote a URL encoded string.</p>
+
+<h3 class="function"><a name="urlencode-1">urlencode/1</a></h3>
+<div class="spec">
+<p><tt>urlencode(Props::[{Key, Value}]) -&gt; string()</tt><br></p>
+</div><p>URL encode the property list.</p>
+
+<h3 class="function"><a name="urlsplit-1">urlsplit/1</a></h3>
+<div class="spec">
+<p><tt>urlsplit(Url) -&gt; {Scheme, Netloc, Path, Query, Fragment}</tt><br></p>
+</div><p>Return a 5-tuple, does not expand % escapes. Only supports HTTP style
+       URLs.</p>
+
+<h3 class="function"><a name="urlsplit_path-1">urlsplit_path/1</a></h3>
+<div class="spec">
+<p><tt>urlsplit_path(Path::Url) -&gt; {Path, Query, Fragment}</tt><br></p>
+</div><p>Return a 3-tuple, does not expand % escapes. Only supports HTTP style
+       paths.</p>
+
+<h3 class="function"><a name="urlunsplit-1">urlunsplit/1</a></h3>
+<div class="spec">
+<p><tt>urlunsplit(X1::{Scheme, Netloc, Path, Query, Fragment}) -&gt; string()</tt><br></p>
+</div><p>Assemble a URL from the 5-tuple. Path must be absolute.</p>
+
+<h3 class="function"><a name="urlunsplit_path-1">urlunsplit_path/1</a></h3>
+<div class="spec">
+<p><tt>urlunsplit_path(X1::{Path, Query, Fragment}) -&gt; string()</tt><br></p>
+</div><p>Assemble a URL path from the 3-tuple.</p>
+<hr>
+
+<div class="navbar"><a name="#navbar_bottom"></a><table width="100%" border="0" cellspacing="0" cellpadding="2" summary="navigation bar"><tr><td><a href="overview-summary.html" target="overviewFrame">Overview</a></td><td><a href="http://www.erlang.org/"><img src="erlang.png" align="right" border="0" alt="erlang logo"></a></td></tr></table></div>
+<p><i>Generated by EDoc, Mar 5 2015, 12:00:41.</i></p>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Module mochiweb_session</title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css" title="EDoc">
+</head>
+<body bgcolor="white">
+<div class="navbar"><a name="#navbar_top"></a><table width="100%" border="0" cellspacing="0" cellpadding="2" summary="navigation bar"><tr><td><a href="overview-summary.html" target="overviewFrame">Overview</a></td><td><a href="http://www.erlang.org/"><img src="erlang.png" align="right" border="0" alt="erlang logo"></a></td></tr></table></div>
+<hr>
+
+<h1>Module mochiweb_session</h1>
+<ul class="index"><li><a href="#description">Description</a></li><li><a href="#types">Data Types</a></li><li><a href="#index">Function Index</a></li><li><a href="#functions">Function Details</a></li></ul>HTTP Cookie session.
+<p>Copyright © 2013 Mochi Media, Inc.
+ 
+  Permission is hereby granted, free of charge, to any person obtaining a
+  copy of this software and associated documentation files (the "Software"),
+  to deal in the Software without restriction, including without limitation
+  the rights to use, copy, modify, merge, publish, distribute, sublicense,
+  and/or sell copies of the Software, and to permit persons to whom the
+  Software is furnished to do so, subject to the following conditions:
+ 
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+ 
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+  THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+  DEALINGS IN THE SOFTWARE.</p>
+
+<p><b>Authors:</b> Asier Azkuenaga Batiz (<a href="mailto:asier@zebixe.com"><tt>asier@zebixe.com</tt></a>).</p>
+
+<h2><a name="description">Description</a></h2>HTTP Cookie session. Note that the expiration time travels unencrypted
+  as far as this module is concerned. In order to achieve more security,
+  it is advised to use https.
+  Based on the paper
+  <a href="http://www.cse.msu.edu/~alexliu/publications/Cookie/cookie.pdf">
+  "A Secure Cookie Protocol"</a>.
+  This module is only supported on R15B02 and later, the AES CFB mode is not
+  available in earlier releases of crypto.
+<h2><a name="types">Data Types</a></h2>
+
+<h3 class="typedecl"><a name="type-expiration_time">expiration_time()</a></h3>
+<p><tt>expiration_time() = integer()</tt></p>
+
+
+<h3 class="typedecl"><a name="type-header">header()</a></h3>
+<p><tt>header() = {string(), string()}</tt></p>
+
+
+<h3 class="typedecl"><a name="type-key_fun">key_fun()</a></h3>
+<p><tt>key_fun() = fun((string()) -&gt; iolist())</tt></p>
+
+
+<h2><a name="index">Function Index</a></h2>
+<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#check_session_cookie-4">check_session_cookie/4</a></td><td></td></tr>
+<tr><td valign="top"><a href="#generate_session_cookie-4">generate_session_cookie/4</a></td><td>Convenience wrapper for generate_session_data that returns a
+  mochiweb cookie with "id" as the key, a max_age of 20000 seconds,
+  and the current local time as local time.</td></tr>
+<tr><td valign="top"><a href="#generate_session_data-4">generate_session_data/4</a></td><td>Generates a secure encrypted binary convining all the parameters.</td></tr>
+</table>
+
+<h2><a name="functions">Function Details</a></h2>
+
+<h3 class="function"><a name="check_session_cookie-4">check_session_cookie/4</a></h3>
+<div class="spec">
+<p><tt>check_session_cookie(ECookie::binary(), ExpirationTime::string(), FSessionKey::<a href="#type-key_fun">key_fun()</a>, ServerKey::iolist()) -&gt; {Success::boolean(), ExpTimeAndData::[integer() | binary()]}</tt><br></p>
+</div>
+
+<h3 class="function"><a name="generate_session_cookie-4">generate_session_cookie/4</a></h3>
+<div class="spec">
+<p><tt>generate_session_cookie(ExpirationTime::<a href="#type-expiration_time">expiration_time()</a>, Data::iolist(), FSessionKey::<a href="#type-key_fun">key_fun()</a>, ServerKey::iolist()) -&gt; <a href="#type-header">header()</a></tt><br></p>
+</div><p>Convenience wrapper for generate_session_data that returns a
+  mochiweb cookie with "id" as the key, a max_age of 20000 seconds,
+  and the current local time as local time.</p>
+
+<h3 class="function"><a name="generate_session_data-4">generate_session_data/4</a></h3>
+<div class="spec">
+<p><tt>generate_session_data(ExpirationTime::<a href="#type-expiration_time">expiration_time()</a>, Data::iolist(), FSessionKey::<a href="#type-key_fun">key_fun()</a>, ServerKey::iolist()) -&gt; binary()</tt><br></p>
+</div><p>Generates a secure encrypted binary convining all the parameters. The
+  expiration time must be a 32-bit integer.</p>
+<hr>
+
+<div class="navbar"><a name="#navbar_bottom"></a><table width="100%" border="0" cellspacing="0" cellpadding="2" summary="navigation bar"><tr><td><a href="overview-summary.html" target="overviewFrame">Overview</a></td><td><a href="http://www.erlang.org/"><img src="erlang.png" align="right" border="0" alt="erlang logo"></a></td></tr></table></div>
+<p><i>Generated by EDoc, Mar 5 2015, 12:00:40.</i></p>
+</body>
+</html>

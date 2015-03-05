@@ -1,0 +1,12 @@
+{application, area,
+ [
+  {description, ""},
+  {vsn, "1"},
+  {registered, []},
+  {applications, [
+                  kernel,
+                  stdlib
+                 ]},
+  {mod, { area_app, []}},
+  {env, []}
+ ]}.

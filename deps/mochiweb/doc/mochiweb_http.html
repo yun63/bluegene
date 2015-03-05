@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Module mochiweb_http</title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css" title="EDoc">
+</head>
+<body bgcolor="white">
+<div class="navbar"><a name="#navbar_top"></a><table width="100%" border="0" cellspacing="0" cellpadding="2" summary="navigation bar"><tr><td><a href="overview-summary.html" target="overviewFrame">Overview</a></td><td><a href="http://www.erlang.org/"><img src="erlang.png" align="right" border="0" alt="erlang logo"></a></td></tr></table></div>
+<hr>
+
+<h1>Module mochiweb_http</h1>
+<ul class="index"><li><a href="#description">Description</a></li><li><a href="#index">Function Index</a></li><li><a href="#functions">Function Details</a></li></ul>HTTP server.
+<p>Copyright © 2007 Mochi Media, Inc.
+ 
+  Permission is hereby granted, free of charge, to any person obtaining a
+  copy of this software and associated documentation files (the "Software"),
+  to deal in the Software without restriction, including without limitation
+  the rights to use, copy, modify, merge, publish, distribute, sublicense,
+  and/or sell copies of the Software, and to permit persons to whom the
+  Software is furnished to do so, subject to the following conditions:
+ 
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+ 
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+  THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+  DEALINGS IN THE SOFTWARE.</p>
+
+<p><b>Authors:</b> Bob Ippolito (<a href="mailto:bob@mochimedia.com"><tt>bob@mochimedia.com</tt></a>).</p>
+
+<h2><a name="description">Description</a></h2>HTTP server.
+<h2><a name="index">Function Index</a></h2>
+<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#after_response-2">after_response/2</a></td><td></td></tr>
+<tr><td valign="top"><a href="#loop-3">loop/3</a></td><td></td></tr>
+<tr><td valign="top"><a href="#parse_range_request-1">parse_range_request/1</a></td><td></td></tr>
+<tr><td valign="top"><a href="#range_skip_length-2">range_skip_length/2</a></td><td></td></tr>
+<tr><td valign="top"><a href="#reentry-1">reentry/1</a></td><td></td></tr>
+<tr><td valign="top"><a href="#start-1">start/1</a></td><td>Start a mochiweb server.</td></tr>
+<tr><td valign="top"><a href="#start_link-1">start_link/1</a></td><td></td></tr>
+<tr><td valign="top"><a href="#stop-0">stop/0</a></td><td></td></tr>
+<tr><td valign="top"><a href="#stop-1">stop/1</a></td><td></td></tr>
+</table>
+
+<h2><a name="functions">Function Details</a></h2>
+
+<h3 class="function"><a name="after_response-2">after_response/2</a></h3>
+<div class="spec">
+<p><tt>after_response(Body, Req) -&gt; any()</tt></p>
+</div>
+
+<h3 class="function"><a name="loop-3">loop/3</a></h3>
+<div class="spec">
+<p><tt>loop(Socket, Opts, Body) -&gt; any()</tt></p>
+</div>
+
+<h3 class="function"><a name="parse_range_request-1">parse_range_request/1</a></h3>
+<div class="spec">
+<p><tt>parse_range_request(RawRange) -&gt; any()</tt></p>
+</div>
+
+<h3 class="function"><a name="range_skip_length-2">range_skip_length/2</a></h3>
+<div class="spec">
+<p><tt>range_skip_length(Spec, Size) -&gt; any()</tt></p>
+</div>
+
+<h3 class="function"><a name="reentry-1">reentry/1</a></h3>
+<div class="spec">
+<p><tt>reentry(Body) -&gt; any()</tt></p>
+</div>
+
+<h3 class="function"><a name="start-1">start/1</a></h3>
+<div class="spec">
+<p><tt>start(Options) -&gt; ServerRet</tt>
+<ul class="definitions"><li><tt>Options = [<a href="#type-option">option()</a>]</tt></li><li><tt>Option = {name, atom()} | {ip, string() | tuple()} | {backlog, integer()} | {nodelay, boolean()} | {acceptor_pool_size, integer()} | {ssl, boolean()} | {profile_fun, undefined | fun((Props) -&gt; ok)} | {link, false} | {recbuf, <a href="#type-non_negative_integer">non_negative_integer()</a>}</tt></li></ul></p>
+</div><p>Start a mochiweb server.
+       profile_fun is used to profile accept timing.
+       After each accept, if defined, profile_fun is called with a proplist of a subset of the mochiweb_socket_server state and timing information.
+       The proplist is as follows: [{name, Name}, {port, Port}, {active_sockets, ActiveSockets}, {timing, Timing}].</p>
+
+<h3 class="function"><a name="start_link-1">start_link/1</a></h3>
+<div class="spec">
+<p><tt>start_link(Options) -&gt; any()</tt></p>
+</div>
+
+<h3 class="function"><a name="stop-0">stop/0</a></h3>
+<div class="spec">
+<p><tt>stop() -&gt; any()</tt></p>
+</div>
+
+<h3 class="function"><a name="stop-1">stop/1</a></h3>
+<div class="spec">
+<p><tt>stop(Name) -&gt; any()</tt></p>
+</div>
+<hr>
+
+<div class="navbar"><a name="#navbar_bottom"></a><table width="100%" border="0" cellspacing="0" cellpadding="2" summary="navigation bar"><tr><td><a href="overview-summary.html" target="overviewFrame">Overview</a></td><td><a href="http://www.erlang.org/"><img src="erlang.png" align="right" border="0" alt="erlang logo"></a></td></tr></table></div>
+<p><i>Generated by EDoc, Mar 5 2015, 12:00:41.</i></p>
+</body>
+</html>

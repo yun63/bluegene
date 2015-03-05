@@ -1,0 +1,3 @@
+{application,gateway}.
+{packages,[]}.
+{modules,[gateway,gateway_app,gateway_sup]}.
