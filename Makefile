@@ -14,19 +14,19 @@ clean:
 	./rebar clean
 	@-rm erl_crash.dump -f
 
-# 清楚依赖项目
+# 清除依赖项目
 distclean: clean
 	./rebar delete-deps
 
 # 测试所有项目
-tests:
-	./rebar eunit
+eunit: compile
+	./rebar eunit skip_deps=true
 
 dialyzer: compile
 	@./rebar dialyzer
 
 edoc:
-	@./rebar doc 
+	@./rebar doc  skip_deps=true
 
 release:
 	@./rebar generate 
