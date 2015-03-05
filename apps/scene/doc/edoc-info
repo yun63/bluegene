@@ -1,3 +1,0 @@
-{application,area}.
-{packages,[]}.
-{modules,[area_app,area_server,area_sup]}.

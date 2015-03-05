@@ -1,3 +1,0 @@
-{application,world}.
-{packages,[]}.
-{modules,[world,world_app,world_sup]}.

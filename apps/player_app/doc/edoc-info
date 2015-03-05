@@ -1,3 +1,0 @@
-{application,player}.
-{packages,[]}.
-{modules,[player_app,player_server,player_sup]}.
