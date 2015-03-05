@@ -9,6 +9,10 @@ apps/gateway/ebin/
 apps/player_app/ebin/
 apps/scene/ebin/
 apps/world/ebin/
+apps/gateway/doc/
+apps/player_app/doc/
+apps/scene/doc/
+apps/world/doc/
 *.beam
 *.swp
 *.dump
