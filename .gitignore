@@ -1,7 +1,10 @@
 /deps
 /ebin
 /doc
-/.eunit
+apps/gateway/.eunit
+apps/scene/.eunit
+apps/world/.eunit
+apps/player_app/.eunit
 apps/gateway/ebin/
 apps/player_app/ebin/
 apps/scene/ebin/
