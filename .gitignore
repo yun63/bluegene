@@ -1,6 +1,11 @@
+/deps
 /ebin
 /doc
 /.eunit
+apps/gateway/ebin/
+apps/player_app/ebin/
+apps/scene/ebin/
+apps/world/ebin/
 *.beam
 *.swp
 *.dump
