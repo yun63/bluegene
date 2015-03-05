@@ -49,5 +49,5 @@ code_change(_OldVsn, State, _Extra) ->
 %% ------------------------------------------------------------------
 
 -ifdef(TEST).
--include("../../../test/gateway_tests.hrl").
+-include("test/gateway_tests.hrl").
 -endif.
