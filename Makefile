@@ -11,7 +11,7 @@ compile: deps
 	./rebar compile
 
 clean:
-	./rebar clean skip_deps=true
+	./rebar clean #skip_deps=true
 	@-rm erl_crash.dump -f
 
 # 清除依赖项目
@@ -29,4 +29,6 @@ edoc:
 	@./rebar doc  skip_deps=true
 
 release:
-	@./rebar generate 
+	@scripts/release.sh
+		
+	
