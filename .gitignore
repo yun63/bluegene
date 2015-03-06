@@ -1,6 +1,7 @@
 /deps
 /ebin
 /doc
+/rel
 apps/gateway/.eunit
 apps/scene/.eunit
 apps/world/.eunit
