@@ -17,3 +17,5 @@ bluegene项目里deps目录下的所有子项目都来自于github,参见rebar.c
 
 2. 
 
+### 关于服务器控制脚本
+
