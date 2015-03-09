@@ -15,3 +15,5 @@ bluegene项目里deps目录下的所有子项目都来自于github,参见rebar.c
 
 1. 为了提高编译速度，每次执行make时多忽略掉deps目录下的代码，如果改动deps下的代码，切记修改Makefile让deps参与编译！
 
+2. 
+
