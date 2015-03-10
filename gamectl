@@ -23,8 +23,6 @@ ERLANG_NODE=bluegene@10.10.10.116
 COOKIE="node-cookie"
 
 # 运行的程序及控制文件
-APP_MOD=game_ctrl
-APP_CTL=game_ctrl
 GAME_LOG=$LOG_DIR/game.log
 SASL_LOG=$LOG_DIR/game_`date +%Y%m%d`.sasl
 
@@ -135,11 +133,11 @@ is_started ()
 }
 
 # start interactive server
-debug()
+live()
 {
     $ERL \
       $NAME_FLAG $ERLANG_NODE \
-      -pa $EBINS \
+      -pa $EBINS -boot start_sasl \
       -config $SYSTEM_CONFIG \
       -setcookie ${COOKIE} \
       -kernel dist_auto_connect never \
@@ -253,6 +251,21 @@ reload ()
     fi  
 }
 
+# parse command line parameters                                                                                            
+while [ $# -ne 0 ] ; do                                                                                                    
+    PARAM=$1                                                                                                               
+    shift                                                                                                                  
+    case $PARAM in                                                                                                         
+        --) break ;;                                                                                                       
+        --node|-n) ERLANG_NODE=$1; shift ;;                                                                                
+        --cookie|-c) COOKIE=$1 ; shift ;;                                                                                  
+        --conf|-f) export GAME_CONF_FILE=$1 ; shift ;;                                                                     
+        --help|-h) usage; exit 0;;                                                                                         
+        --reload|-r) RELOAD_TYPE=$1; shift;;                                                                               
+        *) ARGS="$ARGS $PARAM" ;;                                                                                          
+    esac                                                                                                                   
+done                              
+
 DEBUG_NAME=${ERLANG_NODE%%@*}
 HOST=${ERLANG_NODE##*@}
 NAME_FLAG=-name
@@ -260,9 +273,9 @@ NAME_FLAG=-name
 ERLANG_OPTS="-connect_all $CONNECT_ALL_FLAG +K $POLL_FLAG -smp $SMP_FLAG +P $ERL_PROCESSES \
     +t 67108864 +fnu +zdbbl 81920"
 
-case $1 in
+case $ARGS in
     '') usage;;
-    ' debug') debug;;
+    ' live') live;;
     ' start') start;;
     ' status') status;;
     ' attach') attach;;
