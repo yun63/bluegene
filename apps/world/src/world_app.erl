@@ -13,13 +13,14 @@
 start(_StartType, _StartArgs) ->
     try
         %ebase_loglevel:set(?LOG_LEVEL),
-        ok = ensure_apps(),
-        start_global_managers(_StartType, _StartArgs)
+        ok = ensure_apps()
     catch
         Type:Error ->
             io:format("启动world_app失败:~p: ~p~n", [Type, Error]),
             init:stop(world_app)
-    end.
+    end,
+
+    catch(start_global_managers(_StartType, _StartArgs)).
 
 
 %% @doc 停止world应用程序,保存管理器数据

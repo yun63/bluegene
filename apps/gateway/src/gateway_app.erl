@@ -20,7 +20,7 @@ start(_StartType, _StartArgs) ->
             init:stop(gateway)
     end,
 
-    catch do_start(_StartType, _StartArgs).
+    catch(do_start(_StartType, _StartArgs)).
 
 stop(_State) ->
     io:format("gateway_app服务停止, state: ~p~n", [_State]),
