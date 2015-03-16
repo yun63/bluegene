@@ -1,3 +1,4 @@
+ERLC=erlc
 .PHONY: deps doc clean                                                                                                  
 
 all: deps compile
@@ -9,7 +10,7 @@ deps:
 # 编译相关项目,在编译之前先查看依赖项目是否已经存在                                                                     
 compile: deps 
 	./rebar compile
-	erlc -o ebin src/game_ctrl.erl
+	$(ERLC) -o ebin src/game_ctrl.erl
 
 clean:
 	./rebar clean skip_deps=true

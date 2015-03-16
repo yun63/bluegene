@@ -1,5 +1,4 @@
 /deps
-/ebin
 /doc
 /rel
 apps/gateway/.eunit
@@ -14,6 +13,7 @@ apps/gateway/doc/
 apps/player_app/doc/
 apps/scene/doc/
 apps/world/doc/
+ebin/
 *.beam
 *.swp
 *.dump
