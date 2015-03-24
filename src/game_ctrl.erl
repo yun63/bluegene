@@ -28,7 +28,6 @@
 
 %%游戏服务器
 start()->
-    io:format("======= Stasrt Game Server ========~n"),
     try
         ok = start_applications(?SERVER_APPS)
     after

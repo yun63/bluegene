@@ -3,7 +3,7 @@
 
 %% @doc 启动子服务
 start_child(Sup, Child) ->
-    case catch supervison:start_child(Sup, Child) of
+    case catch supervisor:start_child(Sup, Child) of
         {ok, _} ->
             ok;
         {error, {{already_started, _Pid}, _}} -> 

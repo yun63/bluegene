@@ -10,7 +10,7 @@
 %% ===================================================================
 
 %% @doc start gateway application
-start(_StartType, _StartArgs) ->
+start(StartType, StartArgs) ->
     try 
         %ebase_loglevel:set(?LOG_LEVEL),
         ok = ensure_apps()
@@ -20,7 +20,7 @@ start(_StartType, _StartArgs) ->
             init:stop(gateway)
     end,
 
-    catch(do_start(_StartType, _StartArgs)).
+    catch (do_start(StartType, StartArgs)).
 
 stop(_State) ->
     io:format("gateway_app服务停止, state: ~p~n", [_State]),
