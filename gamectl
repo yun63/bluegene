@@ -141,7 +141,7 @@ live()
       -config $SYSTEM_CONFIG \
       -setcookie ${COOKIE} \
       -kernel dist_auto_connect never \
-      -s game_ctrl start \
+      -s game_server start \
       $ERLANG_OPTS -extra $ARGS "$@"
 }
 
@@ -161,7 +161,7 @@ start ()
       -kernel dist_auto_connect never \
       -kernel error_logger \{file,\"$GAME_LOG\"\} \
       -sasl sasl_error_logger \{file,\"$SASL_LOG\"\} \
-      -s game_ctrl start\
+      -s game_server start\
       $ERLANG_OPTS $ARGS "$@"
     
     RETRY=0
@@ -176,7 +176,7 @@ start ()
                 sleep 1
             fi
             if [ $RETRY -ge 30 ]; then
-                warn "*****************服务器game_ctrl启动失败,请手动检查**************"
+                warn "**************** 游戏服务器启动失败,请手动检查 **************"
                 exit 1
             fi
         fi
