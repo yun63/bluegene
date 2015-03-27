@@ -17,3 +17,4 @@ ebin/
 *.beam
 *.swp
 *.dump
+/.eunit
