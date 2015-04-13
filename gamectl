@@ -148,10 +148,10 @@ live()
 # 启动server
 start ()
 {
-    if is_started; then
-        warn "节点$ERLANG_NODE已经启动"
-        exit 0
-    fi
+    #if is_started; then
+        #warn "节点$ERLANG_NODE已经启动"
+        #exit 0
+    #fi
 
     $ERL \
       $NAME_FLAG $ERLANG_NODE \
@@ -197,9 +197,9 @@ status ()
 # 连接到节点内
 attach ()
 {
-    if ! is_started; then
-        error "节点$ERLANG_NODE未启动"
-    fi
+    #if ! is_started; then
+        #error "节点$ERLANG_NODE未启动"
+    #fi
     TTY=`tty | sed -e  's/.*\///g'`
     $ERL \
       $NAME_FLAG debug-${TTY}-${ERLANG_NODE} \
